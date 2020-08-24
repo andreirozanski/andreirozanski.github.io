@@ -69,6 +69,6 @@ ___
 
 ## References
 
-https://genome.ucsc.edu/goldenPath/help/bigPsl.html
+[UCSC - bigPsl](https://genome.ucsc.edu/goldenPath/help/bigPsl.html)
 
 
