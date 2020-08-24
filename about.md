@@ -4,15 +4,15 @@ title: About
 permalink: /about/
 ---
 
-This is the base Jekyll theme. You can find out more info about customizing your Jekyll theme, as well as basic Jekyll usage documentation at [jekyllrb.com](https://jekyllrb.com/)
+* On Science:
 
-You can find the source code for Minima at GitHub:
-[jekyll][jekyll-organization] /
-[minima](https://github.com/jekyll/minima)
+I work in bioinformatics and I am passionate about genomics, transposable elements (the main topic of my Ph.D. thesis) and transcriptomics.
 
-You can find the source code for Jekyll at GitHub:
-[jekyll][jekyll-organization] /
-[jekyll](https://github.com/jekyll/jekyll)
+Also, I am interested in multi-species comparison/analysis at genomic and transcriptomic level, pipelines and reproducibility.
+
+Currently I am working at <a href="https://www.mpibpc.mpg.de/en" target="_blank" rel="noreferrer noopener">mpi-bpc</a> trying to learn more about regeneration and species diversity.
 
 
-[jekyll-organization]: https://github.com/jekyll
+* On Computers:
+
+I am a linux fan with special interest in HPC and virtualization.
