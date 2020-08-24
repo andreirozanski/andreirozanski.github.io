@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.7">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2020-08-24T13:24:45+02:00</updated><id>/feed.xml</id><title type="html">Andrei Rozanski</title><subtitle>Bioinformatics and Linux Notes</subtitle><entry><title type="html">Creating bigPsl track for UCSC genome browser</title><link href="/2020/08/24/creating-bigPsl-track.html" rel="alternate" type="text/html" title="Creating bigPsl track for UCSC genome browser" /><published>2020-08-24T00:00:00+02:00</published><updated>2020-08-24T00:00:00+02:00</updated><id>/2020/08/24/creating-bigPsl-track</id><content type="html" xml:base="/2020/08/24/creating-bigPsl-track.html">&lt;p&gt;Starting point is to have a &lt;a href=&quot;https://genome.ucsc.edu/FAQ/FAQformat.html#format2&quot;&gt;psl&lt;/a&gt; file.&lt;/p&gt;
+
+&lt;p&gt;Its also needed to have in your path &lt;a href=&quot;http://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/pslToBigPsl&quot;&gt;pslToBigPsl&lt;/a&gt;, 
+&lt;a href=&quot;http://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedToBigBed&quot;&gt;bedToBigBed&lt;/a&gt;, &lt;a href=&quot;https://genome.ucsc.edu/goldenPath/help/examples/bigPsl.as&quot;&gt;bigPsl.as&lt;/a&gt; and 
+chrom.sizes file.&lt;/p&gt;
+
+&lt;p&gt;The Makefile to automatize it is:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;SHELL&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/bin/bash
+.ONESHELL:
+
+&lt;span class=&quot;nv&quot;&gt;PSL&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt;wildcard &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;.psl&lt;span class=&quot;si&quot;&gt;)&lt;/span&gt;
+TXT:&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt;addsuffix .txt, &lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;basename&lt;/span&gt; &lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt;PSL&lt;span class=&quot;si&quot;&gt;)))&lt;/span&gt;
+BB:&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt;addsuffix .bb,&lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;basename&lt;/span&gt; &lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt;TXT&lt;span class=&quot;si&quot;&gt;)))&lt;/span&gt;
+
+.PHONY: all clear
+
+
+all: &lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt;BB&lt;span class=&quot;si&quot;&gt;)&lt;/span&gt;
+
+
+%.txt: %.psl
+        pslToBigPsl &lt;span class=&quot;nv&quot;&gt;$&amp;lt;&lt;/span&gt; stdout | &lt;span class=&quot;nb&quot;&gt;sort&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-k1&lt;/span&gt;,1 &lt;span class=&quot;nt&quot;&gt;-k2&lt;/span&gt;,2n &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$@&lt;/span&gt;
+
+%.bb: %.txt
+        wget &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; https://genome.ucsc.edu/goldenPath/help/examples/bigPsl.as &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+        bedToBigBed &lt;span class=&quot;nt&quot;&gt;-as&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;bigPsl.as &lt;span class=&quot;nt&quot;&gt;-type&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;bed12+13 &lt;span class=&quot;nt&quot;&gt;-tab&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$&amp;lt;&lt;/span&gt; chrom.sizes &lt;span class=&quot;nv&quot;&gt;$@&lt;/span&gt;
+
+clear:
+        &lt;span class=&quot;nb&quot;&gt;rm&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;.txt &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+        &lt;span class=&quot;nb&quot;&gt;rm&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;.bb&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;A trackDb.ra snippet:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;track FOOBAR
+parent foo
+shortLabel FOOBAR
+longLabel FOOBAR
+group genes
+priority 4
+visibility dense
+color 51,153,255
+altcolor 0,102,0
+searchTable FOOBAR
+searchType bigBed
+searchMethod prefix
+maxWindowToDraw 10000000
+colorByStrand 50,50,150 150,50,50
+&lt;span class=&quot;nb&quot;&gt;type &lt;/span&gt;bigBed 6 +
+bigDataUrl /gbdb/foo/bar
+spectrum on&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;references&quot;&gt;References&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://genome.ucsc.edu/goldenPath/help/bigPsl.html&quot;&gt;UCSC - bigPsl&lt;/a&gt;&lt;/p&gt;</content><author><name></name></author><summary type="html">Starting point is to have a psl file.</summary></entry></feed>
