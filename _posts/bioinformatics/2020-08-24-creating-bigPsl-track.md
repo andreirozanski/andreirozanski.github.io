@@ -1,6 +1,7 @@
 ---
 layout: post
 title:  "Creating bigPsl track for UCSC genome browser"
+tag: Bioinformatics
 ---
 
 Starting point is to have a [psl](https://genome.ucsc.edu/FAQ/FAQformat.html#format2) file. 

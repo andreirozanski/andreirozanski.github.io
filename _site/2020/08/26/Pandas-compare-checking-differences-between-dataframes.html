@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Pandas : compare - Checking differences between DataFrames | Andrei Rozanski</title>
+<meta name="generator" content="Jekyll v3.8.7" />
+<meta property="og:title" content="Pandas : compare - Checking differences between DataFrames" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="When comparing DataFrames, compare is here to help." />
+<meta property="og:description" content="When comparing DataFrames, compare is here to help." />
+<link rel="canonical" href="/2020/08/26/Pandas-compare-checking-differences-between-dataframes.html" />
+<meta property="og:url" content="/2020/08/26/Pandas-compare-checking-differences-between-dataframes.html" />
+<meta property="og:site_name" content="Andrei Rozanski" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-08-26T00:00:00+02:00" />
+<script type="application/ld+json">
+{"mainEntityOfPage":{"@type":"WebPage","@id":"/2020/08/26/Pandas-compare-checking-differences-between-dataframes.html"},"@type":"BlogPosting","url":"/2020/08/26/Pandas-compare-checking-differences-between-dataframes.html","headline":"Pandas : compare - Checking differences between DataFrames","dateModified":"2020-08-26T00:00:00+02:00","datePublished":"2020-08-26T00:00:00+02:00","description":"When comparing DataFrames, compare is here to help.","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/feed.xml" title="Andrei Rozanski" /><script>
+if(!(window.doNotTrack === "1" || navigator.doNotTrack === "1" || navigator.doNotTrack === "yes" || navigator.msDoNotTrack === "1")) {
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-176144418-1', 'auto');
+  ga('send', 'pageview');
+}
+</script>
+  
+</head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">Andrei Rozanski</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/bioinformatics/">Bioinformatics</a><a class="page-link" href="/data_analysis/">Data Analysis</a><a class="page-link" href="/about/">About</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Pandas : compare - Checking differences between DataFrames</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2020-08-26T00:00:00+02:00" itemprop="datePublished">Aug 26, 2020
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>When comparing DataFrames, <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.compare.html">compare</a> is here to help.</p>
+
+<p>Imagine you have two different methods and they have the same output structure and you want to check the differences in results by comparing tables.</p>
+
+<p>Lets create a dataframe 1:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import pandas as pd
+import numpy as np
+
+# Lets create two dataframes
+
+df1 = pd.DataFrame(np.array([[101, 102, 103], 
+	[201, 202, 203], 
+	[301, 302, 303]]), columns=['Value1', 'Value2', 'Value3'], index=['A1',"A2","A3"])
+
+df1
+
+	Value1	Value2	Value3
+A1	101	102	103
+A2	201	202	203
+A3	301	302	303
+
+</code></pre></div></div>
+
+<p>and dataframe 2:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>df2 = pd.DataFrame(np.array([[101, 102.5, 103], 
+	[201, 202, 203], 
+	[301, 304, 303]]), columns=['Value1', 'Value2', 'Value3'],index=['A1',"A2","A3"])
+
+df2
+
+	Value1	Value2	Value3
+A1	101.0	102.5	103.0
+A2	201.0	202.0	203.0
+A3	301.0	304.0	303.0
+
+
+</code></pre></div></div>
+
+<p>Now, lets use compare:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>df1.compare(df2)
+
+		Value2
+	self	other
+A1	102.0	102.5
+A3	302.0	304.0
+</code></pre></div></div>
+
+<p>We can see that only in Value2, A1 and A3 are different, being <strong>self</strong> = df1 and <strong>other</strong> = df2.</p>
+
+<p>It is also possible to make use of <strong>keep_equal</strong> and <strong>keep_shape</strong> arguments to change the way results are displayed:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>keep_shape - "If true, all rows and columns are kept. Otherwise, only the ones with different values are kept."
+
+keep_equal - "If true, the result keeps values that are equal. Otherwise, equal values are shown as NaNs."
+
+
+df1.compare(df2,keep_equal=True,keep_shape=True)
+
+     Value1	     Value2	    Value3
+   self	other  self	other  self	other
+A1	101	101.0	102	102.5	103	103.0
+A2	201	201.0	202	202.0	203	203.0
+A3	301	301.0	302	304.0	303	303.0
+
+
+df1.compare(df2,keep_shape=True,keep_equal=False)
+
+	 Value1	    Value2	     Value3
+   self	other self	other	self other
+A1	NaN	NaN	102.0	102.5	NaN	NaN
+A2	NaN	NaN	NaN	NaN	NaN	NaN
+A3	NaN	NaN	302.0	304.0	NaN	NaN
+
+</code></pre></div></div>
+
+
+  </div><a class="u-url" href="/2020/08/26/Pandas-compare-checking-differences-between-dataframes.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Andrei Rozanski</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Andrei Rozanski</li><li><a class="u-email" href="mailto:rozanski.andrei at gmail dot com">rozanski.andrei at gmail dot com</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/andreirozanski"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">andreirozanski</span></a></li><li><a href="https://www.twitter.com/andreirozanski"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">andreirozanski</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Bioinformatics and Linux Notes</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
