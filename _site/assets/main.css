@@ -503,3 +503,12 @@ table {
     color: #008080; }
   .highlight .il {
     color: #099; }
+
+.site-title::before {
+  content: url("/assets/logo.png");
+  display: inline-block;
+  position: fixed;
+  bottom: 50px;
+  right: 1550px;
+  width: 50px;
+  top: 10px; }

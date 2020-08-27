@@ -50,4 +50,5 @@ plugins:
 header_pages:
     - bioinformatics.md
     - data_analysis.md
+    - linux.md
     - about.md
