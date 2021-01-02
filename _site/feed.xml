@@ -1,4 +1,17 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.7">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2020-08-27T12:06:50+02:00</updated><id>/feed.xml</id><title type="html">Andrei Rozanski</title><subtitle>Bioinformatics and Linux Notes</subtitle><entry><title type="html">QEMU - 4k resolution</title><link href="/2020/08/27/qemu-4k-resolution.html" rel="alternate" type="text/html" title="QEMU - 4k resolution" /><published>2020-08-27T00:00:00+02:00</published><updated>2020-08-27T00:00:00+02:00</updated><id>/2020/08/27/qemu-4k-resolution</id><content type="html" xml:base="/2020/08/27/qemu-4k-resolution.html">&lt;p&gt;For all that I have done here, I have followed the directions provided by “Staf Wagemakers” in his post: “High screen resolution on a KVM virtual machine with QXL”&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.7">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2021-01-02T16:54:51+01:00</updated><id>/feed.xml</id><title type="html">Andrei Rozanski</title><subtitle>Bioinformatics and Linux Notes</subtitle><entry><title type="html">Sampling fastq files with seqtk</title><link href="/2021/01/02/sampling-fastq.html" rel="alternate" type="text/html" title="Sampling fastq files with seqtk" /><published>2021-01-02T00:00:00+01:00</published><updated>2021-01-02T00:00:00+01:00</updated><id>/2021/01/02/sampling-fastq</id><content type="html" xml:base="/2021/01/02/sampling-fastq.html">&lt;p&gt;Using &lt;a href=&quot;https://github.com/lh3/seqtk&quot;&gt;seqtk&lt;/a&gt; to sample fastq files.&lt;/p&gt;
+
+&lt;p&gt;One example of usage of seqtk sample for 5 mi of reads:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;seqtk sample &lt;span class=&quot;nt&quot;&gt;-s100&lt;/span&gt; foo_R1.fastq.gz 5000000 |gzip - &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; foo_sample_5mi_s100_R1.fastq.gz &amp;amp;
+seqtk sample &lt;span class=&quot;nt&quot;&gt;-s100&lt;/span&gt; foo_R2.fastq.gz 5000000 |gzip - &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; foo_sample_5mi_s100_R2.fastq.gz &amp;amp;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;in that case, it is important to fix a seed for both files in order to keep proper pairing.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;references&quot;&gt;References&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://github.com/lh3/seqtk&quot;&gt;seqtk&lt;/a&gt;&lt;/p&gt;</content><author><name></name></author><category term="Bioinformatics" /><summary type="html">Using seqtk to sample fastq files.</summary></entry><entry><title type="html">QEMU - 4k resolution</title><link href="/2020/08/27/qemu-4k-resolution.html" rel="alternate" type="text/html" title="QEMU - 4k resolution" /><published>2020-08-27T00:00:00+02:00</published><updated>2020-08-27T00:00:00+02:00</updated><id>/2020/08/27/qemu-4k-resolution</id><content type="html" xml:base="/2020/08/27/qemu-4k-resolution.html">&lt;p&gt;For all that I have done here, I have followed the directions provided by “Staf Wagemakers” in his post: “High screen resolution on a KVM virtual machine with QXL”&lt;/p&gt;
 
 &lt;p&gt;To get 4k working in the guest one need to fix the amount of video RAM in the host:&lt;/p&gt;
 
